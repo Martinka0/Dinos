@@ -47,33 +47,43 @@ function getDinos(dinos) {
   dinos.map((dino) => console.log(dino));
 }
  
-
-    
-    
-function Human (name, height, weight,diet) {
-  this.name = name;
-  this.height = height;
-  this.weight = weight;
-  this.diet = diet;
+function getHumanData(){
+  human={};
+  human.name = document.getElementById('name').value;
+  human.height = (document.getElementById('feet').value * 12) + document.getElementById('inches').value;
+  human.weight = document.getElementById('weight').value;
+  human.diet = document.getElementById('diet').value;
+  console.log(human);
+  return human
 }
+    
 const button = document.getElementById('btn');
-button.addEventListener('click', function(human){
+button.addEventListener("click", (event)=>{
+  event.preventDefault();
+  console.log("working!!")
+  getHumanData();
+});    
+// function Human (name, height, weight,diet) {
+//   this.name = name;
+//   this.height = height;
+//   this.weight = weight;
+//   this.diet = diet;
+// }
+// const button = document.getElementById('btn');
+// button.addEventListener('click', function(){
   
- 
-    human.name = document.getElementById('name').value;
-    human.height = (document.getElementById('feet').value * 12) + document.getElementById('inches').value;
-    human.weight = document.getElementById('weight').value;
-    human.diet = document.getElementById('diet').value;
-    var human = new Human (name, height, weight,diet);
-    return(human);
-  })();
+//   (function (human) {
+//     human.name = document.getElementById('name').value;
+//     human.height = (document.getElementById('feet').value * 12) + document.getElementById('inches').value;
+//     human.weight = document.getElementById('weight').value;
+//     human.diet = document.getElementById('diet').value;
+//     var human = new Human (name, height, weight,diet);
+//     return(human);
+//   })();
   
-  console.log(human);
-  document.forms[0].reset();
-  
-  console.log(human);
-  document.forms[0].reset();
-
+//   console.log(human);
+//   document.forms[0].reset();
+// });
  //ref: https://knowledge.udacity.com/questions/350113
  // ref : https://www.youtube.com/watch?v=NxVCq4p0Kb0
   
