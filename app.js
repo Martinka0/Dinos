@@ -9,8 +9,7 @@
  
 
 
-//Add a submit event listener to the dino-compare form. 
-//Try to console.log the dinos data when the form is submitted.
+
 //On form submit: hide the form and show the grid (you can get their ids from the HTML code). 
 //'display: none;' is a good CSS property to use here.
 //On form submit: loop through the dinos list and create an instance of the constructor/class for each entry. 
@@ -32,21 +31,31 @@ function Dino(species, height, weight, diet, where, when, fact, img) {
   this.when = when;
   this.fact = fact;
   this.img = img;
-}
-
+};
 // Create Dino Objects
+//add a randomFact method in the Dino constructor 
+Dino.prototype.randomInfo = function (item) {
+  const info = ['weigt', 'height', 'diet', 'fact'];
+  const randomNumber = Math.floor(Math.random() * Math.floor(info.length));
+  return this[info[randomNumber]](item);
+};
+
 let dinos = [];
 fetch("./dino.json")
   .then((res) => res.json())
   .then((data) => {
-    let dinos = data.Dinos;
+    dinos = data.Dinos;
     console.log(dinos);
-    getDinos(dinos);
+  getDinos(dinos);
   });
-function getDinos(dinos) {
-  dinos.map((dino) => console.log(dino));
+function getDinos(ds) {
+  ds.map((dino) => console.log(dino.species));
 }
- 
+
+
+
+
+//const human = new Human();
 function getHumanData(){
   human={};
   human.name = document.getElementById('name').value;
@@ -56,54 +65,69 @@ function getHumanData(){
   console.log(human);
   return human
 }
-    
+
+  // Use IIFE to get human data from form   
 const button = document.getElementById('btn');
 button.addEventListener("click", (event)=>{
   event.preventDefault();
   console.log("working!!")
   getHumanData();
 });    
-// function Human (name, height, weight,diet) {
-//   this.name = name;
-//   this.height = height;
-//   this.weight = weight;
-//   this.diet = diet;
-// }
-// const button = document.getElementById('btn');
-// button.addEventListener('click', function(){
-  
-//   (function (human) {
-//     human.name = document.getElementById('name').value;
-//     human.height = (document.getElementById('feet').value * 12) + document.getElementById('inches').value;
-//     human.weight = document.getElementById('weight').value;
-//     human.diet = document.getElementById('diet').value;
-//     var human = new Human (name, height, weight,diet);
-//     return(human);
-//   })();
-  
-//   console.log(human);
-//   document.forms[0].reset();
-// });
- //ref: https://knowledge.udacity.com/questions/350113
- // ref : https://www.youtube.com/watch?v=NxVCq4p0Kb0
-  
-    // Use IIFE to get human data from form
-    // 3. Get human data from the html form to build your human object. 
-    //Think about what 3 things you are going to compare to your human. 
-    //You may need to create more fields, adjust the fields that are there, 
-    //or remove fields to correspond with the data you will be collecting. 
-    
 
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
-
+   
+    //  Dino Compare Method 1
+  
+    Dino.prototype.weight = function (){
+      const humanWeight = human.weight;
+      const dinoWeight = this.weight;
+      const difference = Math.abc(this.weight - human.weight); 
+      
+      
+      if (humanWeight > dinoWeight) {
+      return `The ${this.species} weighs + ${difference} + more then ${human.name}.`;
+     
+      } else if (dinoWeight < humanWeight) {
+      return `The ${this.species} weighs + ${difference} + less then ${human.name}.`;  
+      } else {
+       return `the ${this.species} weighs the same as ${human.name}`; 
+       
+      }
+    };
     
     // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
+    Dino.prototype.height = function (){
+      const humanHeight = human.height;
+      const dinoHeight = this.height;
+      const difference = Math.abc(dinoHeight - humanHeight); 
+      
+      if (humanWeight > dinoWeight) {
+      return `The ${this.species} weighs + ${difference} + more then ${human.name}.`;
+     
+      } else if (dinoWeight < humanWeight) {
+      return `The ${this.species} weighs + ${difference} + less then ${human.name}.`;  
+      } else {
+       return `the ${this.species} weighs the same as ${human.name}`; 
+       
+      }
+    };
+    
+    
 
     
     // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
+
+    Dino.prototype.diet = function () {
+      const humanDiet = human.diet;
+      const dinoDiet = this.diet;
+      if (humanDiet === dinoDiet) {
+        return `${this.species} likes to eat the same things as ${human.name}.`
+      } else {
+        return `${this.species} was a ${this.diet}.`
+      }
+      };
+
+    
+   
 
 
     // Generate Tiles for each Dino in Array
@@ -112,5 +136,8 @@ button.addEventListener("click", (event)=>{
 
     // Remove form from screen
 
+function removeForm() {
+  dinoCompare.style.display = "none";
+}
 
 // On button click, prepare and display  infographic
