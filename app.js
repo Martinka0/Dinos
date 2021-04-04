@@ -52,7 +52,7 @@ function getDinos(ds) {
   ds.map((dino) => console.log(dino.species));
 }
 
-
+console.log(dino.species);
 
 
 //const human = new Human();
@@ -131,8 +131,16 @@ button.addEventListener("click", (event)=>{
 
 
     // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
+    const grid = document.querySelector('grid');
+
+    const dinoTile = document.createElement('p');
+    dinoTile.textContent = 'We hope you enjoyed the ride.';
+    
+
+
+    // Add tiles to DOM
+
+    grid.appendChild(dinoTile);
 
     // Remove form from screen
 
