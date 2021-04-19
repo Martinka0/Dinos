@@ -1,24 +1,4 @@
 
-    //var declarations are globally scoped or function scoped 
-    //while let and const are block scoped. 
-    //var variables can be updated and re-declared within its scope; 
-    //let variables can be updated but not re-declared; 
-    //const variables can neither be updated nor re-declared. 
-    //They are all hoisted to the top of their scope.
-    // 2. Decide how you will work with classes, then build out your classes and objects.
- 
-
-
-
-//On form submit: hide the form and show the grid (you can get their ids from the HTML code). 
-//'display: none;' is a good CSS property to use here.
-//On form submit: loop through the dinos list and create an instance of the constructor/class for each entry. 
-//It will be used to create the tiles later. Log that new list.
-//On form submit: get the data from the form. There is a number of ways to do it, 
-//but every input has an id and makes it easier to use getElementById.
-//There, the first part (getting the data) is ready. Now you need to create compare 
-// //functions and build the tiles. 
-
 
 
 //Create a Dino construtor or class.
@@ -32,6 +12,7 @@ function Dino(species, height, weight, diet, where, when, fact, img) {
   this.fact = fact;
   this.img = img;
 };
+// Create Dino Compare Method 1
 Dino.prototype.dietCompare = function(){
   if (human.diet === this.diet){
       return `${this.species} was a ${this.diet}. You two could share dinner.`;
@@ -61,7 +42,7 @@ Dino.prototype.dietCompare = function(){
       }
     };
     
-    // Create Dino Compare Method 3
+// Create Dino Compare Method 3
 
     Dino.prototype.diet = function () {
       const humanDiet = human.diet;
@@ -81,37 +62,28 @@ Dino.prototype.randomInfo = function (item) {
   const info = ['weigt', 'height', 'diet', 'fact'];
   const randomNumber = Math.floor(Math.random() * Math.floor(info.length));
   return this[info[randomNumber]](item);
+  //console.log(item);
 };
 
-// let dinos = [];
-// fetch("./dino.json")
-//   .then((res) => res.json())
-//   .then((data) => {
-//     //if (data.Dinos !== Array) {
-//       console.log(typeof data.Dinos);
-//    // }
-    
-//     dinos = data.Dinos;
-//     console.log(dinos);
-//   getDinos(dinos);
-//   });
-// function getDinos(ds) {
-  
-//   ds.map((dino) => console.log(dino));
-// };
 
 //const human = new Human();
 function getHumanData(){
   human={};
   human.name = document.getElementById('name').value;
-  human.height = (document.getElementById('feet').value * 12) + document.getElementById('inches').value;
+  human.height = (document.getElementById('feet').value * 12 ) + document.getElementById('inches').value;
   human.weight = document.getElementById('weight').value;
   human.diet = document.getElementById('diet').value;
+
   console.log(human);
   return human
 }
 
   // Use IIFE to get human data from form   
+  (function Human() {
+    getHumanData();
+
+  })();
+
 const button = document.getElementById('btn');
 button.addEventListener("click", (event)=>{
   const getDinos = async () => {
@@ -123,46 +95,53 @@ button.addEventListener("click", (event)=>{
     const dinos = await getDinos();
     {
   
- //uncought referrence in promise
- data.map((dino) => console.log(dino));
+ //uncought referrence in promise resolved : https://knowledge.udacity.com/questions/542357
+ dinos.Dinos.map((dino) => {
+    generateUi(dino)
+    console.log(dino);
+    
+    
+    });
+    
     };
     }; 
+
+
   
   createDinos();
+  
   event.preventDefault();
-  console.log("working!!")
-  //getHumanData();
-  //displayInfographic();
+  console.log("working!!") 
+  getHumanData(human);
+  //dino.splice(4, 0,human);
   removeForm();
 });    
-
 // Generate Tiles for each Dino in Array
 
-//  function = displayInfographic () {
-//  let dinos = getDinos();
-//  const human = getHumanData();
+const generateUi=(dino)=>{
+    const grid = document.querySelector('#grid');
+    const head=document.createElement('h3');
+    const image=document.createElement('img');
+    const fact=document.createElement('p');
+    //const randomInfo=document.createElement('p');
+    head.textContent=dino.species;
+    image.src=`./images/${dino.species}.png`;
+    fact.textContent=dino.fact;
 
-//  }
-//     const grid = document.querySelector('grid');
-  
-//     const cell = document.createElement('div');
-
-//     cell.className = 'grid-item';
-// // 
-//     const dinoTile = document.createElement('p');
-//     dinoTile.textContent = '?';
     
-
-
-//     // Add tiles to DOM
-
-//     grid.appendChild(dinoTile);
+  // Add tiles to DOM
+    const newTile = document.createElement('div');
+    newTile.className = 'grid-item';
+    grid.appendChild(newTile);
+    grid.appendChild(head);
+    grid.appendChild(image);
+    grid.appendChild(fact);
+    //grid.appendChild(randomInfo);
+  }
 
 
     // Remove form from screen
 dinoCompare = document.getElementById('dino-compare');
-function removeForm() {
+   function removeForm() {
   dinoCompare.style.display = "none";
 }
-
-// On button click, prepare and display  infographic
