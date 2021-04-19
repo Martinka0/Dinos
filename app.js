@@ -13,7 +13,7 @@ function Dino(species, height, weight, diet, where, when, fact, img) {
   this.img = img;
 };
 // Create Dino Compare Method 1
-Dino.prototype.dietCompare = function(){
+Dino.prototype.dietCompare = function(humanDiet){
   if (human.diet === this.diet){
       return `${this.species} was a ${this.diet}. You two could share dinner.`;
   } else if (this.diet === "carnivor"){
@@ -26,33 +26,39 @@ Dino.prototype.dietCompare = function(){
 }
  
 // Create Dino Compare Method 2
-    Dino.prototype.height = function (){
+    Dino.prototype.height = function (humanHeight){
       const humanHeight = human.height;
       const dinoHeight = this.height;
       const difference = Math.abc(dinoHeight - humanHeight); 
       
-      if (humanWeight > dinoWeight) {
-      return `The ${this.species} weighs + ${difference} + more then ${human.name}.`;
+      if (humanHeight > dinoHeight) {
+      return `The ${this.species} is smaller + ${difference} + then ${human.name}.`;
      
-      } else if (dinoWeight < humanWeight) {
-      return `The ${this.species} weighs + ${difference} + less then ${human.name}.`;  
+      } else if (dinoHeight < humanHeight) {
+      return `The ${this.species} heights is + ${difference} + less then ${human.name}.`;  
       } else {
-       return `the ${this.species} weighs the same as ${human.name}`; 
+       return `the ${this.species} height is the same as ${human.name}`; 
        
       }
     };
     
 // Create Dino Compare Method 3
 
-    Dino.prototype.diet = function () {
-      const humanDiet = human.diet;
-      const dinoDiet = this.diet;
-      if (humanDiet === dinoDiet) {
-        return `${this.species} likes to eat the same things as ${human.name}.`
-      } else {
-        return `${this.species} was a ${this.diet}.`
-      }
-      };
+Dino.prototype.weight = function (humanWeight){
+  const humanWeight = human.weight;
+  const dinoWeight = this.weight;
+  const difference = Math.abc(dinoWeight - humanWeight); 
+  
+  if (humanWeight > dinoWeight) {
+  return `The ${this.species} weighs less + ${difference} + then ${human.name}.`;
+ 
+  } else if (dinoWeight < humanWeight) {
+  return `The ${this.species} weight + ${difference} + more then ${human.name}.`;  
+  } else {
+   return `the ${this.species} weighs the same as ${human.name}`; 
+   
+  }
+};
 
   // https://knowledge.udacity.com/questions/542357
     
