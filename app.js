@@ -146,7 +146,7 @@ const generateUi=(dino)=>{
       fact.textContent = dino.randomInfo(human);
     }
    
-   if (dino.head === "Pigeon") {
+   if (dino.species === "Pigeon") {
      fact.textContent = "All birds are Dinosaurs"; }
 
     
