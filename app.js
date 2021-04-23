@@ -12,7 +12,7 @@ function Dino(species, height, weight, diet, where, when, fact, img) {
   this.img = img;
 };
 // Create Dino Compare Method 1
-Dino.prototype.dietCompare = function(){
+Dino.prototype.dietCompare = function(human){
   if (human.diet === this.diet){
       return `${this.species} was a ${this.diet}. You two could share dinner.`;
   } else if (this.diet === "carnivor"){
@@ -22,45 +22,55 @@ Dino.prototype.dietCompare = function(){
   } else {
       return `${this.species} was a ${this.diet}. Time to suggest a potluck.`;
   }
-}
+};
  
 // Create Dino Compare Method 2
-    Dino.prototype.height = function (){
+    Dino.prototype.heightCompare = function (human){
       const humanHeight = human.height;
       const dinoHeight = this.height;
-      const difference = Math.abc(dinoHeight - humanHeight); 
+      const difference = Math.abs(dinoHeight - humanHeight); 
       
-      if (humanWeight > dinoWeight) {
-      return `The ${this.species} weighs + ${difference} + more then ${human.name}.`;
+      if (humanHeight > dinoHeight) {
+      return `The ${this.species} is  ${difference} inches smaller then ${human.name}.`;
      
-      } else if (dinoWeight < humanWeight) {
-      return `The ${this.species} weighs + ${difference} + less then ${human.name}.`;  
+      } else if (dinoHeight > humanHeight) {
+      return `The ${this.species} is  ${difference} inches taller then ${human.name}.`;  
       } else {
-       return `the ${this.species} weighs the same as ${human.name}`; 
+       return `the ${this.species} height is the same as ${human.name}`; 
        
       }
     };
     
 // Create Dino Compare Method 3
+Dino.prototype.weightCompare = function (human){
+  const humanWeight = human.weight;
+  const dinoWeight = this.weight;
+  const difference = Math.abs(dinoWeight - humanWeight); 
+  
 
-    Dino.prototype.diet = function () {
-      const humanDiet = human.diet;
-      const dinoDiet = this.diet;
-      if (humanDiet === dinoDiet) {
-        return `${this.species} likes to eat the same things as ${human.name}.`
-      } else {
-        return `${this.species} was a ${this.diet}.`
-      }
-      };
+if (humanWeight < dinoWeight) {
+  return `The ${this.species} weighs ${difference} lbs more then ${human.name}.`;
+ 
+  } else if (dinoWeight < humanWeight) {
+  return `The ${this.species} weighs  ${difference} lbs less then ${human.name}.`;  
+  } else {
+   return `the ${this.species} weighs the same as ${human.name}`; 
+   
+  }
+};
 
   // https://knowledge.udacity.com/questions/542357
     
 // Create Dino Objects
 //add a randomFact method in the Dino constructor 
 Dino.prototype.randomInfo = function (item) {
-  const info = ['weigt', 'height', 'diet', 'fact'];
-  const randomNumber = Math.floor(Math.random() * Math.floor(info.length));
-  return this[info[randomNumber]](item);
+  const info = ['weight','height', 'diet', 'fact'];
+  const randomNumber = Math.floor(Math.random() * (info.length -1));
+  if (randomNumber < 3) {
+    return this[info[randomNumber] + 'Compare'](human);
+  }
+  
+  return this[info[randomNumber]];
   //console.log(item);
 };
 
@@ -79,44 +89,38 @@ function getHumanData(){
 };
 
   // Use IIFE to get human data from form   
-  const createDinos = async () => {
-    const dinos = await getDinos();
-    
-
-  };
- 
   const getDinos = async () => {
-    const fetchedData = await fetch ("./dino.json");
+    const fetchedData = await fetch("./dino.json");
     const data = await fetchedData.json();
     return data;
   };
-  
-const button = document.getElementById('btn');
-button.addEventListener("click", (event)=>{
- event.preventDefault();
-
-  const human = getHumanData();
-  console.log("working!!") 
-  
-  const dinoList = dinos.Dinos.map((dino) => {
-    return new Dino(
-      dino.species,
-      dino.height,
-      dino.weight,
-      dino.diet,
-      dino.where,
-      dino.when,
-      dino.fact
-    );
+  const button = document.getElementById("btn");
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    const createDinos = async () => {
+      const dinos = await getDinos();
+      const human = getHumanData();
+      const dinoList = dinos.Dinos.map((dino) => {
+        return new Dino(
+          dino.species,
+          dino.height,
+          dino.weight,
+          dino.diet,
+          dino.where,
+          dino.when,
+          dino.fact
+        );
+      });
+      dinoList.splice(4, 0, human);
+      dinoList.forEach((dino) => {
+        generateUi(dino, human);
+      });
+      
+      removeForm();
+    };
+    createDinos();
   });
-  console.log(data);
-  dinoList.forEach((dino) => {
-    
-    generateUi(dino, human);
-  });
-  removeForm();
-});
-  createDinos();
+  
 
 
 
@@ -128,23 +132,34 @@ const generateUi=(dino)=>{
     const head=document.createElement('h3');
     const image=document.createElement('img');
     const fact=document.createElement('p');
-    //const randomInfo=document.createElement('p');
-    head.textContent=dino.species;
-    image.src=`./images/${dino.species}.png`;
-    fact.textContent=dino.fact;
+    
+    // If dino has a name, it is a human and we want to display it.
+    head.textContent= dino.name || dino.species;
+    // Now, if dino does not have species, it is a human.
+    image.src=`./images/${dino.species || "human"}.png`;
+    // Only show fact if the dino has one.
+    if (dino.fact) {
+      fact.textContent=dino.fact;
+    }
+  
+    if (dino.fact) {
+      fact.textContent = dino.randomInfo(human);
+    }
+   
+   if (dino.head === "Pigeon") {
+     fact.textContent = "All birds are Dinosaurs"; }
 
     
   // Add tiles to DOM
     const newTile = document.createElement('div');
     newTile.className = 'grid-item';
+    
+    newTile.appendChild(head);
+    newTile.appendChild(image);
+    newTile.appendChild(fact);
     grid.appendChild(newTile);
-    grid.appendChild(head);
-    grid.appendChild(image);
-    grid.appendChild(fact);
-    //grid.appendChild(randomInfo);
-  }
 
-
+  };
     // Remove form from screen
 dinoCompare = document.getElementById('dino-compare');
    function removeForm() {
