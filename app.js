@@ -58,7 +58,6 @@ if (humanWeight < dinoWeight) {
    
 };
 
-  // https://knowledge.udacity.com/questions/542357
     
 // Create Dino Objects
 //add a randomFact method in the Dino constructor 
@@ -73,10 +72,10 @@ Dino.prototype.randomInfo = function (human) {
   
 };
 
- 
+const human = {};
 function getHumanData() {
  
-  const human = {};
+  
   human.name = document.getElementById("name").value;
   human.height = (document.getElementById("feet").value * 12) + document.getElementById("inches").value;
   human.weight = document.getElementById("weight").value;
